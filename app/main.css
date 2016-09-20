@@ -1,0 +1,10 @@
+body {
+  background: cornsilk;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+#wrap {
+  max-width: 42em;
+  padding: 2em;
+  margin: 0 auto;
+}
