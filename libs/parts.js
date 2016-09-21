@@ -1,5 +1,7 @@
 const webpack = require("webpack");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const PurifyCSSPlugin = require("purifycss-webpack-plugin");
 
 // Serve to localhost:8080 and enable live reload JS.
 exports.devServer = function(options) {
@@ -119,6 +121,41 @@ exports.clean = function(path) {
         // Without `root`, CleanWebpackPlugin won't point
         // to our project and will fail.
         root: process.cwd()
+      })
+    ]
+  }
+}
+
+// Pull CSS out of the head and dump into separate file.
+exports.extractCSS = function(paths) {
+  return {
+    module: {
+      loaders: [
+        // Extract CSS during build
+        {
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract("style", "css"),
+          include: paths
+        }
+      ]
+    },
+    plugins: [
+      // Output extracted CSS to a file.
+      new ExtractTextPlugin("[name].[chunkhash].css")
+    ]
+  }
+}
+
+// Cleanup any unused styling on build.
+exports.purifyCSS = function(paths) {
+  return {
+    plugins: [
+      new PurifyCSSPlugin({
+        basePath: process.cwd(),
+        // `paths` is used to point PurifyCSS to files
+        // not visible to Webpack. You can pass glob
+        // patterns to it as well.
+        paths: paths
       })
     ]
   }

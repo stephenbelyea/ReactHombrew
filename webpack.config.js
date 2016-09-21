@@ -7,6 +7,10 @@ const pkg = require("./package.json");
 
 const PATHS = {
   app: path.join(__dirname, "app"),
+  style: [
+    path.join(__dirname, "node_modules", "purecss"),
+    path.join(__dirname, "app", "main.css")
+  ],
   build: path.join(__dirname, "build")
 };
 
@@ -15,6 +19,7 @@ const common = {
   // We'll be using the latter form given it's
   // convenient with more complex configurations.
   entry: {
+    style: PATHS.style,
     app: PATHS.app,
     vendor: Object.keys(pkg.dependencies)
   },
@@ -35,12 +40,14 @@ var config;
 switch (process.env.npm_lifecycle_event) {
   // Run the full build (npm run build).
   case "build":
+  //case "stats":
     config = merge(
       common,
       {
         devtool: "source-map",
         output: {
           path: PATHS.build,
+          //publicPath: "/ReactHombrew/",
           filename: "[name].[chunkhash].js",
           // This is used for require.ensure. The setup
           // will work without, but this is useful to set.
@@ -56,7 +63,8 @@ switch (process.env.npm_lifecycle_event) {
         name: "vendor"
       }),
       parts.minify(),
-      parts.setupCSS(PATHS.app)
+      parts.extractCSS(PATHS.style),
+      parts.purifyCSS(PATHS.app)
     );
     break;
   // Run the dev start (npm start).
@@ -66,7 +74,7 @@ switch (process.env.npm_lifecycle_event) {
       {
         devtool: "source-map"
       },
-      parts.setupCSS(PATHS.app),
+      parts.setupCSS(PATHS.style),
       parts.devServer({
         // Customize host/port here if needed
         host: process.env.HOST,
@@ -75,4 +83,7 @@ switch (process.env.npm_lifecycle_event) {
     );
 }
 
-module.exports = validate(config);
+// Run validator in quiet mode to avoid output in stats.
+module.exports = validate(config, {
+  quiet: true
+});

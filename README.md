@@ -1,5 +1,5 @@
 # React Homebrew
-Webpack and Babel config for React. Built incrmentally,
+Webpack and Babel config for React. Built incrementally,
 from the ground up while follow a pretty killer guide.
 
 ## Based on [SurviveJS](http://survivejs.com/)
