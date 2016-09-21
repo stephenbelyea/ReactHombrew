@@ -40,13 +40,14 @@ var config;
 switch (process.env.npm_lifecycle_event) {
   // Run the full build (npm run build).
   case "build":
-  //case "stats":
+  case "stats":
     config = merge(
       common,
       {
         devtool: "source-map",
         output: {
           path: PATHS.build,
+          // Deploy to GitHub - not working...
           //publicPath: "/ReactHombrew/",
           filename: "[name].[chunkhash].js",
           // This is used for require.ensure. The setup
@@ -64,7 +65,7 @@ switch (process.env.npm_lifecycle_event) {
       }),
       parts.minify(),
       parts.extractCSS(PATHS.style),
-      parts.purifyCSS(PATHS.app)
+      parts.purifyCSS([PATHS.app])
     );
     break;
   // Run the dev start (npm start).
@@ -83,7 +84,4 @@ switch (process.env.npm_lifecycle_event) {
     );
 }
 
-// Run validator in quiet mode to avoid output in stats.
-module.exports = validate(config, {
-  quiet: true
-});
+module.exports = validate(config);

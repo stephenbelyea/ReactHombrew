@@ -13,6 +13,12 @@ you haven't already, and considering buying the book(s).
 - To build the production copy, run `npm run build`.
 
 ## Versions
+### v0.2 - [Building with Webpack](http://survivejs.com/webpack/building-with-webpack/)
+Minifying build, setting env vars, splitting up bundles and
+building manifest, clear caching with file hases, cleaning dir
+on build cmd, styles to separate CSS file, install PureCSS lib,
+cleanup unused styles, analyze build stats, deploy to GitHub on
+build (this one's not really working).
 ### v0.1 - [Developing with Webpack](http://survivejs.com/webpack/developing-with-webpack/)
 Webpack merge, validator, dev-server, and HMR up-and-running
 for live-reloading JS and CSS to dynamic-built HTML file.
